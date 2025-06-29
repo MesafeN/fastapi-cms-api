@@ -1,128 +1,123 @@
-# CMS API with FastAPI
+# FastAPI CMS API - A Lightweight Content Management System 🚀
 
-This project is a lightweight content management system (CMS) API built using **FastAPI**, supporting user authentication, blog creation, and like/unlike functionality.
+![GitHub release](https://img.shields.io/github/release/MesafeN/fastapi-cms-api.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
----
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Endpoints](#api-endpoints)
+- [Authentication](#authentication)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-## 🚀 Features
+## Overview
+Welcome to the FastAPI CMS API repository! This project provides a lightweight content management system (CMS) API built with FastAPI. It features user authentication, blog management, and like/unlike functionality. The API is secured with JWT and supports versioning. You can find the latest releases [here](https://github.com/MesafeN/fastapi-cms-api/releases).
 
-- **User Account Management**: Register, login, update, delete user accounts.
-- **JWT Authentication**: Secure authentication using OAuth2 with JWT tokens.
-- **Blog Post API**: Create, retrieve, update, delete blog posts with visibility controls (public/private).
-- **Like System**: Users can like/unlike public or their own blog posts.
-- **Access Control**: Only post owners can edit/delete their posts. Private posts are only viewable by their owners.
-- **SQLAlchemy (2.0 style)** for efficient object relation mapping.
-- **100% Test Coverage** using `pytest`.
-- **API Versioning**: Clean `/v1/...` structured endpoints.
+## Features
+- **User Authentication**: Secure user login and registration using JWT.
+- **Blog Management**: Create, read, update, and delete blog posts.
+- **Like/Unlike Functionality**: Users can like or unlike blog posts.
+- **API Versioning**: Easily manage different versions of the API.
+- **100% Test Coverage**: All functionalities are covered with tests using pytest.
 
----
+## Technologies Used
+This project leverages a variety of technologies:
+- **FastAPI**: A modern web framework for building APIs with Python 3.6+ based on standard Python type hints.
+- **SQLAlchemy**: An ORM for managing database interactions.
+- **Pydantic**: For data validation and settings management.
+- **JWT**: For secure authentication.
+- **pytest**: For testing the API functionalities.
 
-## 📦 Technology Stack
+## Installation
+To set up the FastAPI CMS API on your local machine, follow these steps:
 
-- **Python 3.12**
-- **FastAPI**
-- **SQLAlchemy**
-- **JWT (PyJWT)**
-- **SQLite** (default, can be configured for MySQL/Postgres)
-- **pytest** for testing
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/MesafeN/fastapi-cms-api.git
+   cd fastapi-cms-api
+   ```
 
----
+2. **Create a virtual environment**:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
 
-## 🛠 Setup Instructions
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### 1️⃣ Clone the Repository
+4. **Run the application**:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+
+5. **Visit the API documentation**:
+   Open your browser and go to `http://127.0.0.1:8000/docs` to view the interactive API documentation.
+
+## Usage
+Once the application is running, you can use the API endpoints to manage users and blog posts. 
+
+### Example Requests
+- **Register a new user**:
+  ```bash
+  curl -X POST "http://127.0.0.1:8000/users/register" -H "Content-Type: application/json" -d '{"username": "testuser", "password": "testpass"}'
+  ```
+
+- **Login**:
+  ```bash
+  curl -X POST "http://127.0.0.1:8000/users/login" -H "Content-Type: application/json" -d '{"username": "testuser", "password": "testpass"}'
+  ```
+
+- **Create a new blog post**:
+  ```bash
+  curl -X POST "http://127.0.0.1:8000/posts" -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d '{"title": "My First Post", "content": "Hello, world!"}'
+  ```
+
+## API Endpoints
+Here’s a brief overview of the available API endpoints:
+
+### User Endpoints
+- **POST /users/register**: Register a new user.
+- **POST /users/login**: Authenticate a user and receive a JWT.
+
+### Blog Post Endpoints
+- **GET /posts**: Retrieve all blog posts.
+- **GET /posts/{id}**: Retrieve a specific blog post by ID.
+- **POST /posts**: Create a new blog post.
+- **PUT /posts/{id}**: Update an existing blog post.
+- **DELETE /posts/{id}**: Delete a blog post.
+- **POST /posts/{id}/like**: Like a blog post.
+- **POST /posts/{id}/unlike**: Unlike a blog post.
+
+## Authentication
+The API uses JWT for authentication. After logging in, you will receive a token. Include this token in the `Authorization` header for protected routes.
+
+### Example
 ```bash
-git clone https://github.com/pc-crazy/fastapi-cms-api.git
-cd fastapi-cms-api
+Authorization: Bearer <your_jwt_token>
 ```
 
-### 2️⃣ Create & Activate Virtual Environment
-```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-```
-
-### 3️⃣ Install Requirements
-```bash
-pip install -r requirements.txt
-```
-
-### 4️⃣ Setup Environment Variables
-Create a `.env` file with the following content:
-```
-DB_USER=root
-DB_PASSWORD=yourpass
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=your_db_name
-SECRET_KEY=your-secret-key
-```
-
-### 5️⃣ Run the Application
-```bash
-uvicorn src.main:app --reload
-```
-
-Visit: [http://localhost:8000/docs](http://localhost:8000/docs) for Swagger UI
-
----
-
-## 🧪 Running Tests
+## Testing
+The project includes tests to ensure all functionalities work as expected. To run the tests, use the following command:
 
 ```bash
-pytest --cov=src tests/
+pytest
 ```
 
-You should see near **100% coverage** if setup properly.
+Make sure your database is set up correctly before running the tests.
 
----
+## Contributing
+Contributions are welcome! If you have suggestions or improvements, please fork the repository and submit a pull request. Make sure to follow the coding standards and include tests for new features.
 
-## 📂 Folder Structure
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-```
-src/
-├── api/v1/
-│   ├── accounts.py
-│   ├── blog.py
-│   └── like.py
-├── auth.py
-├── database.py
-├── init_db.py
-├── main.py
-├── models.py
-└── schemas.py
-tests/
-    ├── test_accounts.py
-    ├── test_blog.py
-    ├── test_like.py
-    ├── test_auth.py
-    ├── test_database.py
-    └── conftest.py
-```
-
----
-
-## 📫 Postman Collection
-
-A ready-to-use Postman collection is provided to test all API endpoints:
-
-📥 [Download CMS API Postman Collection](cms-api.postman_collection.json)
-
-📥 [Download CMS API Postman Environment](cms-api.postman_environment.json)
-
-> ✅ The **Login** request includes a test script that automatically sets the `access_token` in the Postman environment upon successful login.
->
-> 📌 Import both files into Postman. Use the environment to set `base_url` and `access_token` for authenticated requests.
-
----
-
-## 🧑‍💻 Author
-
-Developed by **Paras Chauhan**  
-[GitHub](https://github.com/pc-crazy) | [LinkedIn](https://www.linkedin.com/in/paras-chauhan/)
-
----
-
-## 📝 License
-
-This project is open-source and available under the [MIT License](LICENSE).
+## Contact
+For questions or feedback, feel free to reach out via GitHub or create an issue in the repository. You can find the latest releases [here](https://github.com/MesafeN/fastapi-cms-api/releases).
